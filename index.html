@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criador de Cartazes ADA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@900&display=swap" rel="stylesheet">
+
+    <style>
+        .poster-template {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .poster-template:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .photo-placeholder {
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+        }
+        .heart-icon {
+            position: absolute;
+            color: rgba(239, 68, 68, 0.1);
+            font-size: 10rem;
+            z-index: 0;
+        }
+        .canvas-container{
+            width: 100% !important;
+            height: 400px !important;
+        }
+        .upper-canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        #previewContainer {
+            width: 100%;
+            max-width: 540px; /* ou o valor desejado */
+            margin: 0 auto;
+        }
+
+        #posterCanvas {
+            width: 100% !important;
+            height: auto !important;
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .heart-icon {
+                font-size: 6rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-6 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <div class=" p-3 flex items-center justify-center" style="width: 90px; height: 90px;">
+                    <img src="/assets/img/ICONES - TRANSPARENTE.png" alt="Logo ADA" class="w-full object-cover">
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">Criador de Cartazes ADA</h1>
+            </div>
+            <div class="text-sm text-gray-600 hidden md:block">
+                <span class="font-semibold">Alerta de Desaparecidos em Angola</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Input Section -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-6">Informações do Desaparecido</h2>
+                
+                <!-- Photo Upload -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Foto do Desaparecido</label>
+                    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl">
+                        <div class="space-y-1 text-center">
+                            <div class="flex text-sm text-gray-600 justify-center">
+                                <label for="foto" class="relative cursor-pointer bg-white rounded-md font-medium text-red-600 hover:text-red-500 focus-within:outline-none">
+                                    <span>Carregar uma imagem</span>
+                                    <input id="foto" name="foto" type="file" class="sr-only" accept="image/*">
+                                </label>
+                            </div>
+                            <p class="text-xs text-gray-500">PNG, JPG até 2MB</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Name Input -->
+                <div class="mb-6">
+                    <label for="nome" class="block text-sm font-medium text-gray-700">Nome Completo</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <input type="text" id="nome" class="focus:ring-red-500 focus:border-red-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-lg border" placeholder="Nome do desaparecido">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="fas fa-user text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Phone Numbers -->
+                <div class="mb-6">
+                    <label for="numero1" class="block text-sm font-medium text-gray-700">Números de Telefone para Contacto</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <input type="text" id="numero1" class="focus:ring-red-500 focus:border-red-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-lg border" placeholder="+244 XXX XXX XXX">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="fas fa-phone text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 relative rounded-md shadow-sm">
+                        <input type="text" id="numero2" class="focus:ring-red-500 focus:border-red-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-lg border" placeholder="Número alternativo (opcional)">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="fas fa-mobile-alt text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3 mt-8">
+                    <button type="button" id="download-cartaz" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fas fa-download mr-2"></i> Baixar Cartaz
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Cartaz Preview com Canvas -->
+            <div class="sticky top-8">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Pré-visualização do Cartaz</h2>
+
+                    <div id="previewContainer">
+                        <canvas id="posterCanvas" width="1024" height="1350"></canvas>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-500">
+                    <p>Você pode reposicionar a imagem antes de baixar o cartaz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <span class="font-semibold text-gray-800">ADA - Alerta de Desaparecidos em Angola</span>
+                </div>
+                <div class="text-sm text-gray-500">
+                    <p>© 2025 ADA. Todos os direitos reservados.</p>
+                    <p>desenvolvido por Jodelfi - o Boss mais mau de Angola</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    <script src="/assets/js/index.js"></script>
+</body>
+</html>
