@@ -4,7 +4,7 @@ const canvas = new fabric.Canvas('posterCanvas', {
 });
 
 // Carrega a imagem base (cartaz)
-fabric.Image.fromURL('/assets/img/model.png', (img) => {
+fabric.Image.fromURL('./assets/img/model.png', (img) => {
   img.set({
     selectable: false,
     evented: false,
@@ -27,18 +27,20 @@ function addProfileImage(imageURL) {
   fabric.Image.fromURL(imageURL, (img) => {
     // Escala automática para caber no mask
     const scale = Math.max(
-      IMAGE_MASK_WIDTH / img.width,
-      IMAGE_MASK_HEIGHT / img.height
+      900 / img.width,
+      550 / img.height
     );
 
     const imgGroup = new fabric.Group([], {
-      left: 576,
+      left:1000,
       top: 300,
       width: 500,
       height: 500,
       clipPath: new fabric.Rect({
-        width: 500,
-        height: 500,
+        left: 63,
+        top:336,
+        width: 900,
+        height: 550,
         absolutePositioned: true,
       }),
       selectable: true,
@@ -47,14 +49,17 @@ function addProfileImage(imageURL) {
     img.set({
       scaleX: scale,
       scaleY: scale,
-      left: (IMAGE_MASK_WIDTH - img.width * scale) / 2,
-      top: (IMAGE_MASK_HEIGHT - img.height * scale) / 2,
+      left: (900 - img.width * scale) / 2,
+      top: (550 - img.height * scale) / 2,
       originX: 'left',
       originY: 'top',
+        hasControls: true,
+        lockScalingFlip: true,
     });
 
     imgGroup.addWithUpdate(img);
     canvas.add(imgGroup);
+    canvas.setActiveObject(img);
     canvas.renderAll();
   });
 }
