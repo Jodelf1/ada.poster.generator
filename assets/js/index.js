@@ -66,29 +66,6 @@ function addProfileImage(imageURL) {
     canvas.add(imgGroup);
     canvas.setActiveObject(img);
     canvas.renderAll();
-
-    canvas.on('touch:gesture', function (opt) {
-      const active = canvas.getActiveObject();
-      if (!active || !opt.e.touches || opt.e.touches.length < 2) return;
-
-      const newScale = active.scaleX * opt.e.scale;
-      active.scale(newScale);
-      canvas.requestRenderAll();
-    });
-
-    canvas.on('touch:drag', function (opt) {
-      const active = canvas.getActiveObject();
-      if (!active) return;
-
-      active.left += opt.e.movementX;
-      active.top += opt.e.movementY;
-      canvas.requestRenderAll();
-    });
-
-    canvas.on('mouse:wheel', function(opt) {
-      opt.e.preventDefault();
-      opt.e.stopPropagation();
-    });
   });
 }
 
