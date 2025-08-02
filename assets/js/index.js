@@ -34,32 +34,29 @@ function addProfileImage(imageURL) {
     const imgGroup = new fabric.Group([], {
         left:1000,
         top: 300,
-        width: 500,
+        width: 1200,
         height: 500,
         clipPath: new fabric.Rect({
             left: 60,
             top:336,
-            width: 950,
-            height: 650,
+            width: 1200,
+            height: 580,
             absolutePositioned: true,
         }),
         selectable: false,
-        evented: false
     });
 
     img.set({
         scaleX: scale,
         scaleY: scale,
-        left: (900 - img.width * scale) / 2,
-        top: (550 - img.height * scale) / 2,
+        left: 0,
+        top: 0,
         originX: 'left',
         originY: 'top',
         selectable: true,
         hasControls: true,
         lockScalingFlip: true,
         lockRotation: true,
-        lockMovementX: false,
-        lockMovementY: false,
     });
 
     imgGroup.addWithUpdate(img);
@@ -146,4 +143,24 @@ function updateNumeros() {
   link.href = dataURL;
   link.download = "cartaz-ADA.png";
   link.click();
+});
+
+const zoomStep = 0.05;
+
+document.getElementById('zoomInBtn').addEventListener('click', () => {
+  const img = canvas.getActiveObject();
+  if (img) {
+    img.scaleX += zoomStep;
+    img.scaleY += zoomStep;
+    canvas.requestRenderAll();
+  }
+});
+
+document.getElementById('zoomOutBtn').addEventListener('click', () => {
+  const img = canvas.getActiveObject();
+  if (img && img.scaleX > zoomStep && img.scaleY > zoomStep) {
+    img.scaleX -= zoomStep;
+    img.scaleY -= zoomStep;
+    canvas.requestRenderAll();
+  }
 });
