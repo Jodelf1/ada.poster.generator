@@ -55,13 +55,11 @@ function addProfileImage(imageURL) {
         originY: 'top',
         selectable: true,
         hasControls: true,
-        lockScalingFlip: true,
-        lockRotation: true,
     });
 
     imgGroup.addWithUpdate(img);
     canvas.add(imgGroup);
-    canvas.setActiveObject(img);
+    canvas.setActiveObject(img); 
     canvas.renderAll();
   });
 }
