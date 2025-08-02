@@ -32,35 +32,63 @@ function addProfileImage(imageURL) {
     );
 
     const imgGroup = new fabric.Group([], {
-      left:1000,
-      top: 300,
-      width: 500,
-      height: 500,
-      clipPath: new fabric.Rect({
-        left: 63,
-        top:336,
-        width: 900,
-        height: 550,
-        absolutePositioned: true,
-      }),
-      selectable: true,
+        left:1000,
+        top: 300,
+        width: 500,
+        height: 500,
+        clipPath: new fabric.Rect({
+            left: 60,
+            top:336,
+            width: 950,
+            height: 650,
+            absolutePositioned: true,
+        }),
+        selectable: false,
+        evented: false
     });
 
     img.set({
-      scaleX: scale,
-      scaleY: scale,
-      left: (900 - img.width * scale) / 2,
-      top: (550 - img.height * scale) / 2,
-      originX: 'left',
-      originY: 'top',
+        scaleX: scale,
+        scaleY: scale,
+        left: (900 - img.width * scale) / 2,
+        top: (550 - img.height * scale) / 2,
+        originX: 'left',
+        originY: 'top',
+        selectable: true,
         hasControls: true,
         lockScalingFlip: true,
+        lockRotation: true,
+        lockMovementX: false,
+        lockMovementY: false,
     });
 
     imgGroup.addWithUpdate(img);
     canvas.add(imgGroup);
     canvas.setActiveObject(img);
     canvas.renderAll();
+
+    canvas.on('touch:gesture', function (opt) {
+      const active = canvas.getActiveObject();
+      if (!active || !opt.e.touches || opt.e.touches.length < 2) return;
+
+      const newScale = active.scaleX * opt.e.scale;
+      active.scale(newScale);
+      canvas.requestRenderAll();
+    });
+
+    canvas.on('touch:drag', function (opt) {
+      const active = canvas.getActiveObject();
+      if (!active) return;
+
+      active.left += opt.e.movementX;
+      active.top += opt.e.movementY;
+      canvas.requestRenderAll();
+    });
+
+    canvas.on('mouse:wheel', function(opt) {
+      opt.e.preventDefault();
+      opt.e.stopPropagation();
+    });
   });
 }
 
@@ -73,7 +101,7 @@ function addNome(nome) {
         fontFamily: 'Red Hat Display',
         fontWeight: '900',
         originX: 'center',
-        selectable: true,
+        selectable: false,
         splitByGrapheme: false,
         width: 900, // Define largura fixa para evitar quebra de linha por palavra
     });
@@ -113,10 +141,10 @@ document.getElementById('foto').addEventListener('change', (e) => {
 
 // EVENTOS para adicionar nome/número
 document.getElementById('nome').addEventListener('input', (e) => {
-  canvas.getObjects('textbox').forEach(obj => {
-    if (obj.top === 966.36) canvas.remove(obj);
-  });
-  addNome(e.target.value);
+    canvas.getObjects('textbox').forEach(obj => {
+        if (obj.top === 966.36) canvas.remove(obj);
+    });
+    addNome(e.target.value.toUpperCase());
 });
 
 document.getElementById('numero1').addEventListener('input', updateNumeros);
